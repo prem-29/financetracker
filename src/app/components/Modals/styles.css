@@ -1,0 +1,38 @@
+.submit_btn,
+.submit_btn.ant-btn-primary:hover,
+.submit_btn.ant-btn-primary:focus,
+.submit_btn.ant-btn-primary:active {
+    width: 50%;
+    margin: 0px 0px 0px 25px;
+    border-color: rgb(43, 85, 3) !important;
+    background-color: #081c15 !important;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.button_container {
+    display: flex;
+    justify-content: center;
+    /* Horizontally align the button */
+    margin-top: 20px;
+    /* Add some space above the button */
+}
+
+.inputStyle {
+    -webkit-appearance: none;
+    /* Safari, older Chrome versions */
+    -moz-appearance: textfield;
+    /* Firefox */
+    appearance: none;
+    /* Standard for modern browsers */
+}
+
+.inputStyle::-webkit-inner-spin-button,
+.inputStyle::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    /* Safari, older Chrome versions */
+    appearance: none;
+    /* Modern browsers */
+    margin: 0;
+    /* Removes any extra space */
+}

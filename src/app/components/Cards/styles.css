@@ -1,0 +1,24 @@
+.cardStyle {
+    box-shadow: var(--shadow);
+    min-width: 350px;
+}
+
+.rowStyle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 85%;
+    margin: 2rem auto;
+}
+
+.btn_class,
+.btn_class.ant-btn-primary:hover,
+.btn_class.ant-btn-primary:focus,
+.btn_class.ant-btn-primary:active {
+    width: 80%;
+    margin: 0px 0px 0px 25px;
+    border-color: rgb(43, 85, 3) !important;
+    background-color: #081c15 !important;
+    font-size: 14px;
+    font-weight: 600;
+}

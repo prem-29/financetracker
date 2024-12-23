@@ -49,6 +49,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/plugin-transform-flow-strip-types": "^7.25.9",
     "@babel/preset-flow": "^7.25.9",
     "webpack-cli": "^5.1.4"

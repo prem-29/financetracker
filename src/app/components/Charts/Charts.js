@@ -13,7 +13,7 @@ function Charts({ transactions }) {
             acc.push({
                 date: date,
                 Income: type === "Income" ? amount : 0,
-                Expenses: type === "Expenses" ? amount : 0,
+                Expenses: type === "Expense" ? amount : 0,
             });
         }
         return acc;
@@ -49,7 +49,7 @@ function Charts({ transactions }) {
         <div>
             <Chart
                 chartType="LineChart"
-                width="80%"
+                width="100%"
                 height="400px"
                 data={chartData}
                 options={options}

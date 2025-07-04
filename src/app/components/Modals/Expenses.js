@@ -2,13 +2,13 @@ import React from 'react'
 import { Modal, Form, Input, DatePicker, Button, Select } from 'antd'
 
 
-function Expenses({ isExpenseVisible, handleExpenseCancel, onFinish }) {
+function Expenses({ isExpenseVisible, handleExpenseCancel, onFinish, accountData, categoryData }) {
     const [form] = Form.useForm();
     const { Option } = Select;
     return (
         <Modal style={{ fontWeight: 600 }} title="Add Expenses" visible={isExpenseVisible} onCancel={handleExpenseCancel} footer={null}>
             <Form className='form_style' form={form} onFinish={(values) => {
-                onFinish(values, "Expenses");
+                onFinish(values, "Expense");
                 form.resetFields();
             }}>
                 <Form.Item label="Expenses Name" name="expneses" rules={[{
@@ -29,21 +29,30 @@ function Expenses({ isExpenseVisible, handleExpenseCancel, onFinish }) {
                 }]}>
                     <DatePicker format="YYYY-MM-DD" />
                 </Form.Item>
-                <Form.Item label="Tag" name="tagExpenses" rules={[{
+                <Form.Item label="Account" name="account" rules={[{
                     required: true,
-                    message: "Please select Tag!"
+                    message: "Please select Account!"
                 }]}>
                     <Select defaultValue="">
                         <Option value="">Select</Option>
-                        <Option value="Transportation">Transportation</Option>
-                        <Option value="Telephone">Telephone</Option>
-                        <Option value="Home">Home</Option>
-                        <Option value="Health">Health</Option>
-                        <Option value="Shopping">Shopping</Option>
-                        <Option value="Entertainment">Entertainment</Option>
-                        <Option value="Food">Food</Option>
-                        <Option value="Clothing">Clothing</Option>
-                        <Option value="Education">Education</Option>
+                        {accountData?.map((item) => (
+                            <Option key={item.id} value={item.id}>
+                                {item.account_name}
+                            </Option>
+                        ))}
+                    </Select>
+                </Form.Item>
+                <Form.Item label="Category" name="category" rules={[{
+                    required: true,
+                    message: "Please select Category!"
+                }]}>
+                    <Select defaultValue="">
+                        <Option value="">Select</Option>
+                        {categoryData?.map((item) => item.type === 2 ? (
+                            <Option key={item.id} value={item.id}>
+                                {item.category_name}
+                            </Option>
+                        ) : null)}
                     </Select>
                 </Form.Item>
                 <div className="button_container">

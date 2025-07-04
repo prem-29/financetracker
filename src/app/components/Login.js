@@ -1,37 +1,44 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { selectList, loginSuccess } from '../slices/user_slice';
-// import { FaUserCircle } from "react-icons/fa";
+import { useDispatch } from 'react-redux'
+import { loginSuccess } from '../slices/user_slice';
 import MyButton from './MyButton';
 import { useNavigate } from 'react-router-dom'
 import { Image } from "antd";
 import userImage from '../assets/user.png'
 import loginImage from '../assets/loginscreen.jpg'
 import financeImage from '../assets/finance_tracker.png'
+import axios from 'axios';
 const Login = () => {
     const dispatch = useDispatch();
-    const getuserList = useSelector(selectList);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [emailError, setEmailError] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!email || !password) {
-            setError("Email and Password is mandatory!");
+            setError("Email and Password are mandatory!");
         } else {
-            const user = getuserList.find(
-                (user) => user.email === email && user.password === password
-            )
-
-            if (!user) {
-                setError('Email or Password is invalid')
-            } else {
-                dispatch(loginSuccess());
-                navigate('/home')
+            try {
+                // Replace with your API endpoint
+                const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/user/login`, {
+                    email,
+                    password
+                });
+                if (response.data.success) {
+                    console.log(response.data)
+                    // Assuming the response contains a success flag and user info
+                    localStorage.setItem('userdetail', JSON.stringify(response.data.loggedin.user))
+                    localStorage.setItem('token', response.data.loggedin.token)
+                    dispatch(loginSuccess(response.data.user));
+                    navigate('/home');
+                } else {
+                    setError('Email or Password is invalid');
+                }
+            } catch (error) {
+                setError('An error occurred while logging in. Please try again.', error);
             }
-
         }
     }
 
@@ -74,14 +81,6 @@ const Login = () => {
                     {error && <div style={styles.error}>{error}</div>}
                     <div style={{ width: '100', textAlign: 'center' }}>
                         <MyButton onClick={handleSubmit} />
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <p>Email: abc@gmail.com</p>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: -30 }}>
-                        <p>Password: 1234</p>
-                        {/* <p><u>Register
-                        </u></p> */}
                     </div>
                 </div>
 

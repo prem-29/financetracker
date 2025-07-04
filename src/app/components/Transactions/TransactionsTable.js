@@ -1,24 +1,45 @@
 import React, { useState } from 'react';
 import { Table, Select, Radio } from 'antd';
+import DatePicker from "react-datepicker";
+import PieChart from '../PieCharts/PieChart';
+import './styles.css'
 
-function TransactionsTable({ transactions }) {
+import "react-datepicker/dist/react-datepicker.css";
+
+function TransactionsTable({ transactions, renderChart }) {
     const { Option } = Select;
     const [search, setSearch] = useState("");
     const [typeFilter, setTypeFilter] = useState("");
     const [sortKey, setSortKey] = useState("");
+    const [startDate, setStartDate] = useState(new Date());
 
     const columns = [
-        { title: 'Name', dataIndex: 'name', key: 'name' },
+        { title: 'Name', dataIndex: 'category_name', key: 'category_name' },
         { title: 'Amount', dataIndex: 'amount', key: 'amount' },
-        { title: 'Tag', dataIndex: 'tag', key: 'tag' },
+        { title: 'Tag', dataIndex: 'account_name', key: 'account_name' },
         { title: 'Type', dataIndex: 'type', key: 'type' },
-        { title: 'Date', dataIndex: 'date', key: 'date' },
+        {
+            title: 'Date', dataIndex: 'date', key: 'date', render: (date) => {
+                const d = new Date(date);
+                return d.toLocaleDateString('en-GB'); // formats as DD/MM/YYYY
+            },
+        },
     ];
 
-    const filteredTransaction = transactions.filter((item) =>
-        item.name.toLowerCase().includes(search.toLowerCase()) &&
-        item.type.includes(typeFilter)
-    );
+    const filteredTransaction = transactions.filter((item) => {
+        const matchesSearch = item?.category_name
+            ?.toLowerCase()
+            .includes(search?.toLowerCase());
+
+        const matchesType = typeFilter ? item.type === typeFilter : true;
+
+        const itemDate = new Date(item.date);
+        const matchesMonthYear =
+            itemDate.getMonth() === startDate.getMonth() &&
+            itemDate.getFullYear() === startDate.getFullYear();
+
+        return matchesSearch && matchesType && matchesMonthYear;
+    });
 
     const sortedTransaction = filteredTransaction.sort((a, b) => {
         if (sortKey === "date") {
@@ -54,9 +75,10 @@ function TransactionsTable({ transactions }) {
                 >
                     <Option value="">All</Option>
                     <Option value="Income">Income</Option>
-                    <Option value="Expenses">Expenses</Option>
+                    <Option value="Expense">Expense</Option>
                 </Select>
             </div>
+
             <div className="my-table">
                 <div
                     style={{
@@ -77,9 +99,36 @@ function TransactionsTable({ transactions }) {
                             <Radio.Button value="amount">Sort by Amount</Radio.Button>
                         </Radio.Group>
                     </div>
+                    <div style={{ flex: 2 }}>
+                        <DatePicker
+                            showIcon
+                            selected={startDate}
+                            onChange={(date) => setStartDate(date)}
+                            className="calendar-input"
+                            dateFormat="MMMM-yyyy"
+                            showMonthYearPicker
+                            showFullMonthYearPicker
+                        />
+                    </div>
                 </div>
                 <div style={{ padding: '0px 15px' }}>
-                    <Table dataSource={dataSource} columns={columns} />
+                    <Table dataSource={dataSource} columns={columns} pagination={{
+                        pageSize: 10
+                    }} />
+                </div>
+            </div>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+                // gap: '20px',
+                // marginTop: '30px',
+                // padding: '0 15px',
+            }}>
+                <div style={{ flex: 2 }}>
+                    {renderChart && renderChart(dataSource)}
+                </div>
+                <div style={{ flex: 1 }}>
+                    <PieChart transactions={dataSource} />
                 </div>
             </div>
         </div>

@@ -18,3 +18,40 @@
 .input-flex input:focus {
     outline: none;
 }
+
+.calendar-input {
+    padding: 7px 27px !important;
+    border-radius: 6px;
+    border: 1px solid #d4d4d4;
+    width: 100px;
+}
+
+.react-datepicker__month-wrapper {
+    margin: 10px 20px !important;
+    /* add horizontal space */
+    row-gap: 12px;
+    /* spacing between rows */
+    column-gap: 16px;
+    /* spacing between columns */
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    /* keep it 3-column layout */
+}
+
+.react-datepicker__current-month,
+.react-datepicker__year-read-view--down-arrow,
+.react-datepicker__month-read-view--down-arrow {
+    background-color: #007bff !important;
+    /* your desired color */
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.react-datepicker__month-text--selected,
+.react-datepicker__month-text--keyboard-selected {
+    background-color: #2D6A4F !important;
+    color: white !important;
+    border-radius: 4px;
+    padding: 5px;
+}

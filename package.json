@@ -1,6 +1,5 @@
 {
-  "homepage": "http://prem-29.github.io/financetracker",
-  "name": "redux-app",
+  "name": "financetracker",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

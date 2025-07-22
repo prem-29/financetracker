@@ -3,17 +3,19 @@ import { useDispatch } from 'react-redux'
 import { loginSuccess } from '../slices/user_slice';
 import MyButton from './MyButton';
 import { useNavigate } from 'react-router-dom'
-import { Image } from "antd";
+import { Image, Button } from "antd";
 import userImage from '../assets/user.png'
 import loginImage from '../assets/loginscreen.jpg'
 import financeImage from '../assets/finance_tracker.png'
 import axios from 'axios';
+import Signup from './Modals/Signup';
 const Login = () => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [emailError, setEmailError] = useState('');
+    const [signupVisible, setsignupVisible] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async () => {
@@ -40,6 +42,35 @@ const Login = () => {
                 setError('An error occurred while logging in. Please try again.', error);
             }
         }
+    }
+
+    const handleSignupModal = async () => {
+        setsignupVisible(true);
+    }
+    const onAddUser = async (values) => {
+        let data = {
+            name: values.name,
+            email: values.email,
+            password: values.password
+        }
+        try {
+            const response = await axios.post(
+                `${process.env.REACT_APP_API_BASE_URL}/api/signup/`,
+                data
+            );
+            if (response.data.success) {
+                setsignupVisible(false);
+                alert('User Details Created Successfully!')
+            } else {
+                alert('Try again');
+            }
+        } catch (error) {
+            console.log(error, "error")
+            alert('An error occurred while adding user details. Please try again.', error);
+        }
+    }
+    const handleOnSignupCancel = async () => {
+        setsignupVisible(false);
     }
 
     const validateEmail = (e) => {
@@ -82,9 +113,14 @@ const Login = () => {
                     <div style={{ width: '100', textAlign: 'center' }}>
                         <MyButton onClick={handleSubmit} />
                     </div>
+                    <div style={{ width: '100', textAlign: 'center', padding: 10 }}>
+                        <Button style={{ borderColor: 'white', color: 'rgb(43, 85, 3)', fontWeight: '500' }} onClick={handleSignupModal}>
+                            Signup
+                        </Button>
+                    </div>
                 </div>
-
             </div>
+            <Signup isSignUpVisible={signupVisible} handleOnSignupCancel={handleOnSignupCancel} onSignUp={onAddUser} />
         </section>
     )
 }

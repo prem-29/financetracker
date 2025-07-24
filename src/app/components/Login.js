@@ -55,7 +55,7 @@ const Login = () => {
         }
         try {
             const response = await axios.post(
-                `${process.env.REACT_APP_API_BASE_URL}/api/signup/`,
+                `${process.env.REACT_APP_API_BASE_URL}/api/signup`,
                 data
             );
             if (response.data.success) {

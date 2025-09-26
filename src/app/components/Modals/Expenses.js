@@ -2,7 +2,7 @@ import React from 'react'
 import { Modal, Form, Input, DatePicker, Button, Select } from 'antd'
 
 
-function Expenses({ isExpenseVisible, handleExpenseCancel, onFinish, accountData, categoryData }) {
+function Expenses({ isExpenseVisible, handleExpenseCancel, onFinish, accountData, categoryData, showAccountModal, showCategoryModal }) {
     const [form] = Form.useForm();
     const { Option } = Select;
     return (
@@ -33,7 +33,19 @@ function Expenses({ isExpenseVisible, handleExpenseCancel, onFinish, accountData
                     required: true,
                     message: "Please select Account!"
                 }]}>
-                    <Select defaultValue="">
+                    <Select defaultValue="" dropdownRender={menu => (
+                        <>
+                            {menu}
+                            <div style={{ display: "flex", justifyContent: "center", padding: 8 }}>
+                                <Button
+                                    type="link"
+                                    onClick={showAccountModal}
+                                >
+                                    + Add Account
+                                </Button>
+                            </div>
+                        </>
+                    )}>
                         <Option value="">Select</Option>
                         {accountData?.map((item) => (
                             <Option key={item.id} value={item.id}>
@@ -46,7 +58,19 @@ function Expenses({ isExpenseVisible, handleExpenseCancel, onFinish, accountData
                     required: true,
                     message: "Please select Category!"
                 }]}>
-                    <Select defaultValue="">
+                    <Select defaultValue="" dropdownRender={menu => (
+                        <>
+                            {menu}
+                            <div style={{ display: "flex", justifyContent: "center", padding: 8 }}>
+                                <Button
+                                    type="link"
+                                    onClick={showCategoryModal}
+                                >
+                                    + Add Category
+                                </Button>
+                            </div>
+                        </>
+                    )}>
                         <Option value="">Select</Option>
                         {categoryData?.map((item) => item.type === 2 ? (
                             <Option key={item.id} value={item.id}>

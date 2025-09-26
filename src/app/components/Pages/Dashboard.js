@@ -8,6 +8,8 @@ import Category from '../Modals/Category'
 import TransactionsTable from '../Transactions/TransactionsTable'
 import NoTransactions from '../../assets/NoTransactions'
 import Charts from '../Charts/Charts'
+import ChatIconButton from '../ChatBot'
+import Chatbot from '../ChatBox/ChatBox'
 import './styles.css'
 import axios from 'axios'
 
@@ -23,6 +25,8 @@ function Dashboard() {
     const [balance, setBalance] = useState(0);
     const [accountData, setAccountData] = useState([]);
     const [categoryData, setCategoryData] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
+
 
     useEffect(() => {
         getIncome();
@@ -284,16 +288,22 @@ function Dashboard() {
         getTransactionlist();
     }
 
+    const onOpenChatBox = async () => {
+        setIsOpen(!isOpen);
+    }
+
     return (
-        <div>
-            <Header showAccountModal={handleAccountVisible} showCategoryModal={handleCategoryVisible} />
+        <div className='homeScreen'>
+            <Header />
             <Cards showIncomeModal={handleIncomeVisible} showExpenseModal={handleExpenseVisible} income={incomeTotal} expenses={expenseTotal} balance={balance} />
-            <AddIncome isIncomeVisible={incomeVisible} handleIncomeCancel={handleIncomeClose} onFinish={onFinish} accountData={accountData} categoryData={categoryData} />
-            <Expenses isExpenseVisible={expenseVisible} handleExpenseCancel={handleExpenseClose} onFinish={onFinish} accountData={accountData} categoryData={categoryData} />
+            <AddIncome isIncomeVisible={incomeVisible} handleIncomeCancel={handleIncomeClose} onFinish={onFinish} accountData={accountData} categoryData={categoryData} showAccountModal={handleAccountVisible} showCategoryModal={handleCategoryVisible} />
+            <Expenses isExpenseVisible={expenseVisible} handleExpenseCancel={handleExpenseClose} onFinish={onFinish} accountData={accountData} categoryData={categoryData} showAccountModal={handleAccountVisible} showCategoryModal={handleCategoryVisible} />
             <Account isAccountVisible={accountVisible} handleAccountCancel={handleAccountClose} onFinishAccount={onAddAccount} />
             <Category isCategoryVisible={categoryVisible} handleCategoryCancel={handleCategoryClose} onFinishCategory={onAddCategory} />
             {balance ? (<><TransactionsTable transactions={transactions} renderChart={(transactions) => <Charts transactions={transactions} />} /> </>) : <div style={{ display: 'flex', justifyContent: 'center' }}><div><div className='noTransStyle'><NoTransactions /></div>
                 <p style={{ padding: 25, margin: 10 }}>You Have No Transactions Currently</p></div></div>}
+            <ChatIconButton onClick={onOpenChatBox} />
+            {isOpen && <Chatbot />}
         </div>
     )
 }

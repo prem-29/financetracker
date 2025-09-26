@@ -25,7 +25,7 @@ function Charts({ transactions }) {
             ? [
                 ["Date", "Income", "Expenses"],
                 ...aggregatedData.map((entry) => [
-                    new Date(entry.date),
+                    new Date(entry.date).toLocaleDateString("en-GB"),
                     entry.Income,
                     entry.Expenses,
                 ]),
@@ -38,7 +38,7 @@ function Charts({ transactions }) {
         legend: { position: "bottom" },
         hAxis: {
             title: "Date",
-            format: "MMM dd, yyyy",
+            format: "dd-MM-yyyy",
         },
         vAxis: {
             title: "Amount",
@@ -46,11 +46,10 @@ function Charts({ transactions }) {
     };
 
     return (
-        <div>
+        <div style={{ paddingLeft: 25, paddingRight: 30 }}>
             <Chart
-                chartType="LineChart"
+                chartType="Bar"
                 width="100%"
-                height="400px"
                 data={chartData}
                 options={options}
             />

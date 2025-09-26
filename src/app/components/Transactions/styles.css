@@ -15,6 +15,13 @@
     border: 0;
 }
 
+.search-style {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+}
+
 .input-flex input:focus {
     outline: none;
 }
@@ -54,4 +61,77 @@
     color: white !important;
     border-radius: 4px;
     padding: 5px;
+}
+
+.trans-head {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.transTable {
+    padding: 0px 15px;
+}
+
+.chart-style {
+    display: flex;
+    flex-direction: row;
+    padding-top: 50px;
+}
+
+@media screen and (max-width: 768px) {
+    .search-style {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 30px;
+    }
+
+    .trans-head {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* center items horizontally */
+        gap: 10px;
+        /* space between items */
+        margin-bottom: 1rem;
+    }
+
+    .input-radio {
+        display: flex;
+        justify-content: center;
+        gap: 1px;
+    }
+
+    .calendar-input {
+        width: 100%;
+        max-width: 100px;
+        /* optional, keeps it from being too wide */
+    }
+
+
+    .transTable {
+        padding: 0px;
+    }
+
+    .chart-style {
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    .ant-table-wrapper,
+    .chart-container {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    canvas,
+    svg {
+        max-width: 100% !important;
+        /* ensures charts shrink */
+        height: auto !important;
+    }
 }

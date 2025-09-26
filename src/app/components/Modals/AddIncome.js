@@ -3,7 +3,7 @@ import { Modal, Form, Input, Button, DatePicker, Select } from 'antd';
 import './styles.css';
 
 
-function AddIncome({ isIncomeVisible, handleIncomeCancel, onFinish, accountData, categoryData }) {
+function AddIncome({ isIncomeVisible, handleIncomeCancel, onFinish, accountData, categoryData, showAccountModal, showCategoryModal }) {
     const { Option } = Select;
     const [form] = Form.useForm();
 
@@ -17,7 +17,19 @@ function AddIncome({ isIncomeVisible, handleIncomeCancel, onFinish, accountData,
                     required: true,
                     message: "Please select Account!"
                 }]}>
-                    <Select defaultValue="">
+                    <Select defaultValue="" dropdownRender={menu => (
+                        <>
+                            {menu}
+                            <div style={{ display: "flex", justifyContent: "center", padding: 8 }}>
+                                <Button
+                                    type="link"
+                                    onClick={showAccountModal}
+                                >
+                                    + Add Account
+                                </Button>
+                            </div>
+                        </>
+                    )}>
                         <Option value="">Select</Option>
                         {accountData?.map((item) => (
                             <Option key={item.id} value={item.id}>
@@ -30,7 +42,19 @@ function AddIncome({ isIncomeVisible, handleIncomeCancel, onFinish, accountData,
                     required: true,
                     message: "Please select Category!"
                 }]}>
-                    <Select defaultValue="">
+                    <Select defaultValue="" dropdownRender={menu => (
+                        <>
+                            {menu}
+                            <div style={{ display: "flex", justifyContent: "center", padding: 8 }}>
+                                <Button
+                                    type="link"
+                                    onClick={showCategoryModal}
+                                >
+                                    + Add Category
+                                </Button>
+                            </div>
+                        </>
+                    )}>
                         <Option value="">Select</Option>
                         {categoryData?.map((item) => item.type === 1 ? (
                             <Option key={item.id} value={item.id}>

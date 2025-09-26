@@ -1,3 +1,10 @@
 .noTransStyle {
     box-shadow: var(--shadow);
 }
+
+@media screen and (max-width: 768px) {
+    .homeScreen {
+        padding: 0px;
+    }
+
+}

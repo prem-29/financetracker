@@ -9,7 +9,7 @@ function Account({ isCategoryVisible, handleCategoryCancel, onFinishCategory }) 
     const { Option } = Select;
     const typeData = [{ id: 1, name: 'Income' }, { id: 2, name: 'Expense' }]
     return (
-        <Modal style={{ fontWeight: 600 }} title="Add Category" visible={isCategoryVisible} onCancel={handleCategoryCancel} footer={null}>
+        <Modal style={{ fontWeight: 600 }} centered title="Add Category" visible={isCategoryVisible} onCancel={handleCategoryCancel} footer={null}>
             <Form className='form_style' form={form} onFinish={(values) => {
                 onFinishCategory(values, "category");
                 form.resetFields();

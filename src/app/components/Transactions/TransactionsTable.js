@@ -14,15 +14,16 @@ function TransactionsTable({ transactions, renderChart }) {
     const [startDate, setStartDate] = useState(new Date());
 
     const columns = [
-        { title: 'Name', dataIndex: 'category_name', key: 'category_name' },
-        { title: 'Amount', dataIndex: 'amount', key: 'amount' },
-        { title: 'Tag', dataIndex: 'account_name', key: 'account_name' },
-        { title: 'Type', dataIndex: 'type', key: 'type' },
+        { title: 'Name', dataIndex: 'category_name', key: 'category_name', responsive: ['xs', 'sm', 'md', 'lg'] },
+        { title: 'Amount', dataIndex: 'amount', key: 'amount', responsive: ['xs', 'sm', 'md', 'lg'] },
+        { title: 'Tag', dataIndex: 'account_name', key: 'account_name', responsive: ['xs', 'sm', 'md', 'lg'] },
+        { title: 'Type', dataIndex: 'type', key: 'type', responsive: ['xs', 'sm', 'md', 'lg'] },
         {
             title: 'Date', dataIndex: 'date', key: 'date', render: (date) => {
                 const d = new Date(date);
                 return d.toLocaleDateString('en-GB'); // formats as DD/MM/YYYY
             },
+            responsive: ['xs', 'sm', 'md', 'lg']
         },
     ];
 
@@ -58,20 +59,20 @@ function TransactionsTable({ transactions, renderChart }) {
 
     return (
         <div style={{ width: '100%' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 30px', gap: '5rem' }}>
+            <div className='search-style'>
                 <input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder="Search by Name"
-                    style={{ borderRadius: '5px', border: '1px solid #d9d9d9', padding: '0.5rem', flex: 6 }}
+                    style={{ borderRadius: '5px', border: '1px solid #d9d9d9', padding: '0.5rem', flex: 4 }}
                 />
+                <div style={{ flex: 4, padding: '10px' }}></div>
                 <Select
                     // className="select-input"
                     onChange={(value) => setTypeFilter(value)}
                     value={typeFilter}
                     placeholder="Filter by Type"
-                    allowClear
-                    style={{ flex: 3 }}
+                    style={{ flex: 4 }}
                 >
                     <Option value="">All</Option>
                     <Option value="Income">Income</Option>
@@ -81,13 +82,7 @@ function TransactionsTable({ transactions, renderChart }) {
 
             <div className="my-table">
                 <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        width: '100%',
-                        marginBottom: '1rem',
-                    }}
+                    className='trans-head'
                 >
                     <div style={{ flex: 2, padding: '10px 30px' }}>
                         <h2>My Transactions</h2>
@@ -111,21 +106,15 @@ function TransactionsTable({ transactions, renderChart }) {
                         />
                     </div>
                 </div>
-                <div style={{ padding: '0px 15px' }}>
+                <div className='transTable'>
                     <Table dataSource={dataSource} columns={columns} pagination={{
                         pageSize: 10
                     }} />
                 </div>
             </div>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'row',
-                // gap: '20px',
-                // marginTop: '30px',
-                // padding: '0 15px',
-            }}>
+            <div className='chart-style'>
                 <div style={{ flex: 2 }}>
-                    {renderChart && renderChart(dataSource)}
+                    {window.innerWidth > 768 && renderChart && renderChart(dataSource)}
                 </div>
                 <div style={{ flex: 1 }}>
                     <PieChart transactions={dataSource} />

@@ -1,14 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { loginSuccess } from '../slices/user_slice';
 import MyButton from './MyButton';
 import { useNavigate } from 'react-router-dom'
 import { Image, Button } from "antd";
 import userImage from '../assets/user.png'
-import loginImage from '../assets/loginscreen.jpg'
+import loginImage from '../assets/login.jpg'
 import financeImage from '../assets/finance_tracker.png'
 import axios from 'axios';
 import Signup from './Modals/Signup';
+import { AiFillEye } from "react-icons/ai";
+import { AiFillEyeInvisible } from "react-icons/ai";
+import "./Login.css";
 const Login = () => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
@@ -16,7 +19,31 @@ const Login = () => {
     const [error, setError] = useState('');
     const [emailError, setEmailError] = useState('');
     const [signupVisible, setsignupVisible] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const verify = async () => {
+            const token = new URLSearchParams(window.location.search).get("token");
+            if (token) {
+                try {
+                    const response = await axios.get(
+                        `${process.env.REACT_APP_API_BASE_URL}/api/verify-email`,
+                        { token }
+                    );
+
+                    if (response.data.success) {
+                        alert("Account Verified Successfully");
+                    } else {
+                        alert("Please try again");
+                    }
+                } catch (error) {
+                    alert("Verification failed. Try again later.");
+                }
+            }
+        };
+        verify();
+    }, []);
 
     const handleSubmit = async () => {
         if (!email || !password) {
@@ -29,7 +56,6 @@ const Login = () => {
                     password
                 });
                 if (response.data.success) {
-                    console.log(response.data)
                     // Assuming the response contains a success flag and user info
                     localStorage.setItem('userdetail', JSON.stringify(response.data.loggedin.user))
                     localStorage.setItem('token', response.data.loggedin.token)
@@ -85,13 +111,8 @@ const Login = () => {
     }
 
     return (
-        <section style={{ backgroundImage: `url(${loginImage})`, backgroundSize: 'cover', height: '100vh', backgroundRepeat: 'no-repeat' }}>
+        <section style={styles.sectionBackground}>
             <div style={styles.container}>
-                <div style={{ padding: 40, margin: 40 }}>
-                    <Image src={financeImage} alt="finance_image" width={650} height={700} style={{ userSelect: 'none', pointerEvents: 'none' }}
-                        onContextMenu={(e) => e.preventDefault()}
-                        draggable="false" />
-                </div>
                 <div style={styles.form}>
                     <h1 style={{ textAlign: 'center', color: "#081c15" }}>Login</h1>
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -107,11 +128,32 @@ const Login = () => {
                     <div>
                         <p style={styles.text}>Password *</p>
                     </div>
-                    <div style={styles.fieldStyle}>
-                        <input style={styles.input} type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <div style={{ position: "relative", width: "100%" }}>
+                        <input
+                            style={{
+                                ...styles.input,
+                                paddingRight: "35px", // space so text doesn't overlap the eye
+                            }}
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <span
+                            style={{
+                                position: "absolute",
+                                right: "10px",
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                cursor: "pointer",
+                                fontSize: "18px",
+                            }}
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
+                            {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+                        </span>
                     </div>
                     {error && <div style={styles.error}>{error}</div>}
-                    <div style={{ width: '100', textAlign: 'center' }}>
+                    <div style={{ width: '100', textAlign: 'center', paddingTop: 15 }}>
                         <MyButton onClick={handleSubmit} />
                     </div>
                     <div style={{ width: '100', textAlign: 'center', padding: 10 }}>
@@ -127,23 +169,35 @@ const Login = () => {
 }
 
 const styles = {
+    sectionBackground: {
+        backgroundImage: `url(${loginImage})`,
+        backgroundSize: 'cover',
+        width: '100%',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        height: '100vh',
+        overflow: 'hidden'
+    },
     container: {
         display: 'flex',
-        // justifyContent: 'flex-start',
         alignItems: 'center',
-        height: '100vh', // to center vertically
-        paddingLeft: 40,
+        justifyContent: 'center',
+        height: '100%',
+        width: '100%',
+        padding: '10px'
     },
     form: {
         display: 'flex',
         flexDirection: 'column',
-        width: '500px',
+        width: '100%',
+        maxWidth: '500px',
         borderRadius: '10px',
-        borderWidth: '1px',
-        borderStyle: 'solid',
-        padding: 50,
+        padding: '0px 40px',
         backgroundColor: 'white',
-        height: 550
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
     },
     fieldStyle: {
         display: 'flex',
@@ -160,10 +214,17 @@ const styles = {
         paddingBottom: 10
     },
     input: {
-        flex: 1,
-        padding: '10px',
-        borderRadius: '10px',
-        borderWidth: '1px'
+        width: "100%",
+        padding: "10px",
+        borderRadius: "10px",
+        borderWidth: "1px",
+        border: "1px solid black",
+        boxSizing: "border-box",
+    },
+    eyeIcon: {
+        cursor: "pointer",
+        marginLeft: "8px",
+        fontSize: "18px",
     },
 };
 

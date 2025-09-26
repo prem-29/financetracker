@@ -7,7 +7,7 @@ function Account({ isAccountVisible, handleAccountCancel, onFinishAccount }) {
 
     const [form] = Form.useForm();
     return (
-        <Modal style={{ fontWeight: 600 }} title="Add Account" visible={isAccountVisible} onCancel={handleAccountCancel} footer={null}>
+        <Modal style={{ fontWeight: 600 }} centered title="Add Account" visible={isAccountVisible} onCancel={handleAccountCancel} footer={null}>
             <Form className='form_style' form={form} onFinish={(values) => {
                 onFinishAccount(values);
                 form.resetFields();

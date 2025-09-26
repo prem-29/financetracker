@@ -1,17 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    userList: [{
-        id: 1,
-        email: 'abc@gmail.com',
-        password: '1234'
-    },
-    {
-        id: 2,
-        email: 'testuser@gmail.com',
-        password: '1234'
-    }],
-    isAuthenticate: false,
+    isAuthenticate: localStorage.getItem('isAuthenticate') === 'true'
 }
 
 const loginSlice = createSlice({
@@ -20,13 +10,15 @@ const loginSlice = createSlice({
     reducers: {
         loginSuccess: (state) => {
             state.isAuthenticate = true;
+            localStorage.setItem('isAuthenticate', 'true');
         },
         logout: (state) => {
             state.isAuthenticate = false;
+            localStorage.setItem('isAuthenticate', 'false');
+            localStorage.removeItem('authToken');
         }
     }
 });
 export const { loginSuccess, logout } = loginSlice.actions;
 export const selectIsAuthenticate = (state) => state.logins.isAuthenticate;
-export const selectList = (state) => state.logins.userList;
 export default loginSlice.reducer;

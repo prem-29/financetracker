@@ -86,7 +86,7 @@ const Login = () => {
             );
             if (response.data.success) {
                 setsignupVisible(false);
-                alert('User Details Created Successfully!, Verify link sent to your register email.')
+                alert('User details created successfully! A verification link has been sent to your registered email. If you don’t see it, please check your spam folder.')
             } else {
                 alert('Try again');
 

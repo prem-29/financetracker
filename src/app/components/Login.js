@@ -86,7 +86,7 @@ const Login = () => {
             );
             if (response.data.success) {
                 setsignupVisible(false);
-                alert('User Details Created Successfully!')
+                alert('User Details Created Successfully!, Verify link sent to your register email.')
             } else {
                 alert('Try again');
 
